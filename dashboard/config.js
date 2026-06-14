@@ -1,0 +1,9 @@
+const API_BASE_URL = "http://127.0.0.1:8000";
+const FRIDGE_ID = "Nevera_Docker_001";
+const AUTO_REFRESH_SECONDS = 0;
+
+window.DASHBOARD_CONFIG = {
+  API_BASE_URL,
+  FRIDGE_ID,
+  AUTO_REFRESH_SECONDS,
+};

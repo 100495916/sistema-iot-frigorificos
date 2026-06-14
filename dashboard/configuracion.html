@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Configuracion | Dashboard Frigorifico</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="homepage-body">
+  <main class="page-shell" data-page="settings">
+    <span class="page-label">Configuracion</span>
+
+    <section class="page-screen" aria-label="Pantalla de configuracion">
+      <section class="page-card hero-card" aria-label="Resumen superior">
+        <p class="page-time" data-live-time>00:00</p>
+        <p class="page-meta">FRIDGE ID: <span data-fridge-id>Sin configurar</span></p>
+        <p class="page-meta">ESTADO: <span data-api-status>Sin comprobar</span></p>
+        <button class="reload-button" type="button" data-test-connection>Probar conexion</button>
+      </section>
+
+      <section class="page-card config-list-card">
+        <h1 class="page-title config-title">CONEXION BACKEND</h1>
+
+        <section class="config-toggle-list" aria-label="Parametros activos">
+          <article class="config-toggle-row">
+            <div class="config-toggle-copy">
+              <strong>API_BASE_URL</strong>
+              <p data-api-base-url>Sin configurar</p>
+            </div>
+          </article>
+
+          <article class="config-toggle-row">
+            <div class="config-toggle-copy">
+              <strong>FRIDGE_ID</strong>
+              <p data-fridge-id>Sin configurar</p>
+            </div>
+          </article>
+
+          <article class="config-toggle-row">
+            <div class="config-toggle-copy">
+              <strong>Endpoint inventario</strong>
+              <p data-endpoint-preview>GET /api/v2/fridges/{fridge_id}/inventario</p>
+            </div>
+          </article>
+
+
+        </section>
+      </section>
+
+      <section class="page-card config-form-card">
+        <h2 class="config-section-title">CONFIGURAR API</h2>
+
+        <form class="config-form config-form-wide" action="#" method="post" data-settings-form>
+          <label>
+            API_BASE_URL
+            <input type="url" name="apiBaseUrl" placeholder="http://127.0.0.1:8000" required />
+          </label>
+
+          <label>
+            FRIDGE_ID
+            <input type="text" name="fridgeId" placeholder="Nevera_Docker_001" required />
+          </label>
+
+          <button type="submit">Guardar configuracion</button>
+          <button type="button" class="secondary-config-button" data-reset-config>Restaurar config.js</button>
+        </form>
+
+        <section class="notice-box config-notice" data-feedback>
+          Configura la URL del backend y la nevera que quieres consultar.
+        </section>
+      </section>
+    </section>
+  </main>
+
+  <script src="config.js"></script>
+  <script src="js/shared.js"></script>
+  <script src="js/configuracion.js"></script>
+</body>
+</html>

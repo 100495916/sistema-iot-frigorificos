@@ -1,0 +1,11 @@
+# El StatefulSet necesita un Service "headless" (sin IP propia) para poder
+# asignar a cada pod un nombre DNS estable
+apiVersion: v1
+kind: Service
+metadata:
+  name: neveras
+  
+spec:
+  clusterIP: None
+  selector:
+    app: neveras

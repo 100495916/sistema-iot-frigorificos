@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Historial | Dashboard Frigorifico</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="homepage-body">
+  <main class="page-shell" data-page="history">
+    <span class="page-label">Historial</span>
+
+    <section class="page-screen" aria-label="Pantalla de historial">
+      <section class="page-card hero-card" aria-label="Resumen superior">
+        <p class="page-time" data-live-time>00:00</p>
+        <p class="page-meta">FRIDGE ID: <span data-fridge-id>Sin configurar</span></p>
+        <p class="page-meta">ESTADO: <span data-api-status>Conectando</span></p>
+        <button class="reload-button" type="button" data-refresh>Recargar datos</button>
+      </section>
+
+      <section class="page-card history-card">
+        <h1 class="page-title">HISTORIAL</h1>
+
+        <section class="notice-box" data-feedback>
+          Cargando ultima foto del inventario...
+        </section>
+
+        <section class="history-list-panel" aria-label="Listado de movimientos" data-history-list>
+          <article class="history-row">
+            <span class="history-pill history-pill-add">Cargando datos desde el backend</span>
+            <span class="history-action">i</span>
+          </article>
+        </section>
+      </section>
+    </section>
+  </main>
+
+  <script src="config.js"></script>
+  <script src="js/shared.js"></script>
+  <script src="js/historial.js"></script>
+</body>
+</html>

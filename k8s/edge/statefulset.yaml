@@ -1,0 +1,59 @@
+# StatefulSet: nevera
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: nevera
+spec:
+  serviceName: "neveras"
+
+  # Número de gemelos digitales desplegados simultáneamente
+  replicas: 20
+
+  selector:
+    matchLabels:
+      app: neveras
+  template:
+    metadata:
+      labels:
+        app: neveras
+    spec:
+      containers:
+        - name: gemelo-digital
+          image: europe-southwest1-docker.pkg.dev/uc3m-inf-2026-19476-g29/tfg-frigorifico/edge:latest
+
+          # FRIDGE_ID se inyecta desde el nombre del pod (nevera-0, nevera-1, ...)
+          env:
+            - name: FRIDGE_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+
+          # Variables de entorno y secretos
+          envFrom:
+            - configMapRef:
+                name: edge-config
+            - secretRef:
+                name: edge-secret
+
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "50m"
+            limits:
+              memory: "128Mi"
+              cpu: "200m"
+
+          volumeMounts:
+            - name: data
+              mountPath: /app/data
+
+  # El volumen persiste aunque el pod se reinicie: el token MQTT no se pierde.
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 100Mi

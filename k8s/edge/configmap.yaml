@@ -1,0 +1,18 @@
+# ConfigMap: edge-config
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: edge-config
+
+data:
+  # IP pública de la VM de GCP donde corre ThingsBoard CE
+  THINGSBOARD_HOST: "34.175.184.158"
+
+  # Puerto HTTP de ThingsBoard
+  THINGSBOARD_HTTP_PORT: "8080"
+
+  # Puerto MQTT de ThingsBoard
+  THINGSBOARD_MQTT_PORT: "1883"
+
+  # Directorio donde cada pod guarda su token MQTT persistente
+  DATA_DIR: "/app/data"

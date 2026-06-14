@@ -1,0 +1,19 @@
+# Service: backend
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+
+spec:
+  # LoadBalancer crea un balanceador de carga con IP pública
+  type: LoadBalancer
+
+  # IP estática
+  loadBalancerIP: "34.175.29.6"
+
+  selector:
+    app: backend
+
+  ports:
+    - port: 8000
+      targetPort: 8000

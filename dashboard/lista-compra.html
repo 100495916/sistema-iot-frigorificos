@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lista de la Compra | Dashboard Frigorifico</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="homepage-body">
+  <main class="page-shell" data-page="shopping">
+    <span class="page-label">ListaCompra</span>
+
+    <section class="page-screen" aria-label="Pantalla de lista de la compra">
+      <section class="page-card hero-card" aria-label="Resumen superior">
+        <p class="page-time" data-live-time>00:00</p>
+        <p class="page-meta">FRIDGE ID: <span data-fridge-id>Sin configurar</span></p>
+        <p class="page-meta">ESTADO: <span data-api-status>Conectando</span></p>
+        <button class="reload-button" type="button" data-refresh>Recargar datos</button>
+      </section>
+
+      <section class="page-card shopping-card">
+        <h1 class="page-title">LISTA DE LA COMPRA</h1>
+
+        <section class="notice-box" data-feedback>
+          Cargando lista de compra...
+        </section>
+
+        <section class="shopping-list" aria-label="Productos pendientes de compra" data-shopping-list>
+          <article class="shopping-item-row">
+            <div class="shopping-item-copy">
+              <strong>Cargando...</strong>
+            </div>
+            <div class="shopping-item-actions">
+              <span class="shopping-qty-value">0</span>
+            </div>
+          </article>
+        </section>
+
+        <div class="shopping-order-panel" data-pedir-panel hidden>
+          <button class="reload-button" type="button" data-pedir-online>Pedir online</button>
+        </div>
+      </section>
+      <br>
+
+      <section class="page-card shopping-card">
+        <h2 class="page-title">AÑADIR PRODUCTO</h2>
+        <form class="config-form config-form-wide" action="#" method="post" data-add-item-form>
+          <label>
+            Codigo de barras
+            <input type="text" name="barcode" placeholder="8410128010096" required />
+          </label>
+          <label>
+            Cantidad
+            <input type="number" name="qty" min="1" value="1" required />
+          </label>
+          <button type="submit">Añadir a la lista</button>
+        </form>
+      </section>
+      <br>
+
+      <section class="page-card shopping-card" data-ordered-lists-panel hidden>
+        <h2 class="page-title">PEDIDOS EN CAMINO</h2>
+        <section class="shopping-list" aria-label="Pedidos realizados online pendientes de llegada" data-ordered-lists></section>
+      </section>
+    </section>
+  </main>
+
+  <script src="config.js"></script>
+  <script src="js/shared.js"></script>
+  <script src="js/lista-compra.js"></script>
+</body>
+</html>

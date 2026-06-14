@@ -1,0 +1,15 @@
+services:
+  backend:
+    build: .
+    container_name: frigorifico_backend
+    env_file:
+      - .env
+    environment:
+      PYTHONUNBUFFERED: "1"
+      THINGSBOARD_HOST: host.docker.internal
+      THINGSBOARD_HTTP_PORT: "8080"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "8000:8000"
+    restart: unless-stopped

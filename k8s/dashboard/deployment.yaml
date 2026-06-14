@@ -1,0 +1,45 @@
+# Dployment: dashboard
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dashboard
+
+spec:
+  # Número de copias que deben estar vivas
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: dashboard
+  
+  template:
+    metadata:
+      labels:
+        app: dashboard
+    
+    spec:
+      containers:
+        - name: dashboard
+          image: europe-southwest1-docker.pkg.dev/uc3m-inf-2026-19476-g29/tfg-frigorifico/dashboard:latest
+
+          ports:
+            - containerPort: 80
+
+          resources:
+            requests:
+              memory: "32Mi"
+              cpu: "10m"
+
+            limits:
+              memory: "64Mi"
+              cpu: "100m"
+
+          volumeMounts:
+            - name: config
+              mountPath: /usr/local/apache2/htdocs/config.js
+              subPath: config.js
+              
+      volumes:
+        - name: config
+          configMap:
+            name: dashboard-config

@@ -1,0 +1,5 @@
+services:
+  dashboard:
+    build: .
+    ports:
+      - "8085:80"

@@ -1,0 +1,73 @@
+name: frigorifico_edge
+
+# Vamos a levantar 4 contenedores diferentes
+x-nevera-base: &nevera-base
+  build: .
+  env_file:
+    - .env
+  extra_hosts:
+    - "host.docker.internal:host-gateway"
+  restart: unless-stopped
+
+services:
+  nevera_01:
+    <<: *nevera-base
+    container_name: frigorifico_nevera_01
+    environment:
+      PYTHONUNBUFFERED: "1"
+      FRIDGE_ID: nevera-0
+      DATA_DIR: /app/data
+      THINGSBOARD_HOST: host.docker.internal
+      THINGSBOARD_HTTP_PORT: "8080"
+      THINGSBOARD_MQTT_PORT: "1883"
+    volumes:
+      - nevera_01_data:/app/data
+
+  nevera_02:
+    <<: *nevera-base
+    container_name: frigorifico_nevera_02
+    environment:
+      PYTHONUNBUFFERED: "1"
+      FRIDGE_ID: nevera-1
+      DATA_DIR: /app/data
+      THINGSBOARD_HOST: host.docker.internal
+      THINGSBOARD_HTTP_PORT: "8080"
+      THINGSBOARD_MQTT_PORT: "1883"
+    volumes:
+      - nevera_02_data:/app/data
+
+  nevera_03:
+    <<: *nevera-base
+    container_name: frigorifico_nevera_03
+    environment:
+      PYTHONUNBUFFERED: "1"
+      FRIDGE_ID: nevera-2
+      DATA_DIR: /app/data
+      THINGSBOARD_HOST: host.docker.internal
+      THINGSBOARD_HTTP_PORT: "8080"
+      THINGSBOARD_MQTT_PORT: "1883"
+    volumes:
+      - nevera_03_data:/app/data
+
+  nevera_04:
+    <<: *nevera-base
+    container_name: frigorifico_nevera_04
+    environment:
+      PYTHONUNBUFFERED: "1"
+      FRIDGE_ID: nevera-3
+      DATA_DIR: /app/data
+      THINGSBOARD_HOST: host.docker.internal
+      THINGSBOARD_HTTP_PORT: "8080"
+      THINGSBOARD_MQTT_PORT: "1883"
+    volumes:
+      - nevera_04_data:/app/data
+
+volumes:
+  nevera_01_data:
+    name: frigorifico_nevera_01_data
+  nevera_02_data:
+    name: frigorifico_nevera_02_data
+  nevera_03_data:
+    name: frigorifico_nevera_03_data
+  nevera_04_data:
+    name: frigorifico_nevera_04_data

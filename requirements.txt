@@ -1,0 +1,26 @@
+# Backend
+fastapi
+uvicorn
+pymongo
+requests
+python-dotenv
+pydantic
+certifi
+
+# Edge
+paho-mqtt
+opencv-contrib-python
+onnxruntime
+numpy
+
+# Tests
+pytest
+
+# Entrenamiento modelo
+torch
+torchvision
+onnx
+onnxsim
+matplotlib
+pandas
+tqdm

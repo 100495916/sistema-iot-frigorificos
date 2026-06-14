@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reglas de Compra | Dashboard Frigorifico</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="homepage-body">
+  <main class="page-shell" data-page="rules">
+    <span class="page-label">Reglas Compra</span>
+
+    <section class="page-screen" aria-label="Pantalla de reglas de compra">
+      <section class="page-card hero-card" aria-label="Resumen superior">
+        <p class="page-time" data-live-time>00:00</p>
+        <p class="page-meta">FRIDGE ID: <span data-fridge-id>Sin configurar</span></p>
+        <p class="page-meta">ESTADO: <span data-api-status>Conectando</span></p>
+        <button class="reload-button" type="button" data-refresh>Recargar datos</button>
+      </section>
+
+      <section class="page-card config-list-card">
+        <h1 class="page-title config-title">LISTA REGLAS</h1>
+
+        <section class="config-toggle-list" aria-label="Reglas de reposicion configuradas" data-rules-list>
+          <article class="config-toggle-row">
+            <div class="config-toggle-copy">
+              <strong>Cargando reglas...</strong>
+              <p>Consultando el backend</p>
+            </div>
+          </article>
+        </section>
+      </section>
+
+      <section class="page-card config-form-card">
+        <h2 class="config-section-title" data-form-title>CONFIGURAR REGLA</h2>
+
+        <form class="config-form config-form-wide" action="#" method="post" data-rule-form>
+          <label>
+            Codigo de barras
+            <input type="text" name="barcode" placeholder="8410128010096" required />
+          </label>
+
+          <label>
+            Cantidad minima
+            <input type="number" name="minQty" min="0" value="1" required />
+          </label>
+
+          <label>
+            Cantidad objetivo
+            <input type="number" name="targetQty" min="1" value="3" required />
+          </label>
+
+          <label>
+            Regla activa
+            <select name="enabled">
+              <option value="true">Si</option>
+              <option value="false">No</option>
+            </select>
+          </label>
+
+          <button type="submit">Guardar regla de compra</button>
+          <button type="button" class="secondary-config-button" data-cancel-edit hidden>Cancelar edicion</button>
+        </form>
+
+        <section class="notice-box config-notice" data-feedback>
+          Las reglas se guardan en la API con PUT /api/v2/fridges/{fridge_id}/reglas-lista-compra/{barcode}.
+        </section>
+      </section>
+    </section>
+  </main>
+
+  <script src="config.js"></script>
+  <script src="js/shared.js"></script>
+  <script src="js/reglas.js"></script>
+</body>
+</html>

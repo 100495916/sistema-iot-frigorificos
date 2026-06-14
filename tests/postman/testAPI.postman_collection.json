@@ -1,0 +1,1221 @@
+{
+  "info": {
+    "_postman_id": "f08624b2-d249-4d25-b349-84d1a6d65c9c",
+    "name": "testAPI",
+    "description": "### Esta es la colección creada para testear los endpoints del backend.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "54261886",
+    "_collection_link": "https://go.postman.co/collection/54261886-f08624b2-d249-4d25-b349-84d1a6d65c9c?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "TFG",
+      "item": [
+        {
+          "name": "01 - Inventario",
+          "item": [
+            {
+              "name": "1.1 Listar neveras activas",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status 200\", () => {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"La respuesta es un array\", () => {\r",
+                      "    const body = pm.response.json();\r",
+                      "    pm.expect(body).to.be.an(\"array\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{BASE}}/api/v2/fridges",
+                  "host": [
+                    "{{BASE}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v2",
+                    "fridges"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "1.2 Inventario de nevera activa",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status 200\", () => {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "const body = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"fridgeId coincide con la variable de entorno\", () => {\r",
+                      "    pm.expect(body.fridgeId).to.eql(pm.environment.get(\"FRIDGE_ID\"));\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Existe el array items\", () => {\r",
+                      "    pm.expect(body.items).to.be.an(\"array\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"inventoryCount es número >= 0\", () => {\r",
+                      "    pm.expect(body.metrics.inventoryCount).to.be.a(\"number\").and.to.be.at.least(0);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"inventoryUniqueItems es número >= 0\", () => {\r",
+                      "    pm.expect(body.metrics.inventoryUniqueItems).to.be.a(\"number\").and.to.be.at.least(0);\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{BASE}}/api/v2/fridges/{{FRIDGE_ID}}/inventario",
+                  "host": [
+                    "{{BASE}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v2",
+                    "fridges",
+                    "{{FRIDGE_ID}}",
+                    "inventario"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "1.3 Nevera inexistente",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status 404\", () => {\r",
+                      "    pm.response.to.have.status(404);\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{BASE}}/api/v2/fridges/nevera-que-no-existe/inventario",
+                  "host": [
+                    "{{BASE}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v2",
+                    "fridges",
+                    "nevera-que-no-existe",
+                    "inventario"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "02 - Historial de eventos",
+          "item": [
+            {
+              "name": "2.1 Historial con límite 5",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status 200\", () => {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "const body = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"La respuesta es un array de máximo 5 elementos\", () => {\r",
+                      "    pm.expect(body).to.be.an(\"array\");\r",
+                      "    pm.expect(body.length).to.be.at.most(5);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Cada elemento tiene fridgeId y eventType\", () => {\r",
+                      "    body.forEach((item, i) => {\r",
+                      "        pm.expect(item, `item[${i}] debe tener fridgeId`).to.have.property(\"fridgeId\");\r",
+                      "        pm.expect(item, `item[${i}] debe tener eventType`).to.have.property(\"eventType\");\r",
+                      "    });\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{BASE}}/api/v2/fridges/{{FRIDGE_ID}}/eventos-procesados?limit=5",
+                  "host": [
+                    "{{BASE}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v2",
+                    "fridges",
+                    "{{FRIDGE_ID}}",
+                    "eventos-procesados"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "5"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "03 - Reglas de compra",
+          "item": [
+            {
+              "name": "3.1 Crear regla válida",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status 200\", () => {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "const body = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"barcode correcto\", () => {\r",
+                      "    pm.expect(body.barcode).to.eql(\"8410128010096\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"minQty es 1\", () => {\r",
+                      "    pm.expect(body.minQty).to.eql(1);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"targetQty es 3\", () => {\r",
+                      "    pm.expect(body.targetQty).to.eql(3);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"enabled es true\", () => {\r",
+                      "    pm.expect(body.enabled).to.be.true;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"minQty\": 1,\r\n    \"targetQty\": 3,\r\n    \"enabled\": true\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{BASE}}/api/v2/fridges/{{FRIDGE_ID}}/reglas-lista-compra/8410128010096",
+                  "host": [
+                    "{{BASE}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v2",
+                    "fridges",
+                    "{{FRIDGE_ID}}",
+                    "reglas-lista-compra",
+                    "8410128010096"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "3.2 Listar reglas",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status 200\", () => {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "const body = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"El array no está vacío\", () => {\r",
+                      "    pm.expect(body).to.be.an(\"array\").and.not.empty;\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"Existe la regla creada en 03.1\", () => {\r",
+                      "    const regla = body.find(r => r.barcode === \"8410128010096\");\r",
+                      "    pm.expect(regla, \"No se encontró la regla con ese barcode\").to.exist;\r",
+                      "    pm.expect(regla.targetQty).to.eql(3);\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{BASE}}/api/v2/fridges/{{FRIDGE_ID}}/reglas-lista-compra",
+                  "host": [
+                    "{{BASE}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v2",
+                    "fridges",
+                    "{{FRIDGE_ID}}",
+                    "reglas-lista-compra"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "3.3 Regla inválida",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status 400 — validación rechaza la petición\", () => {\r",
+                      "    pm.response.to.have.status(400);\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"minQty\": 5,\r\n    \"targetQty\": 3\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{BASE}}/api/v2/fridges/{{FRIDGE_ID}}/reglas-lista-compra/8410128010096",
+                  "host": [
+                    "{{BASE}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v2",
+                    "fridges",
+                    "{{FRIDGE_ID}}",
+                    "reglas-lista-compra",
+                    "8410128010096"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "3.4 Eliminar regla",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status 200\", () => {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"deleted es true\", () => {\r",
+                      "    const body = pm.response.json();\r",
+                      "    pm.expect(body.deleted).to.be.true;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{BASE}}/api/v2/fridges/{{FRIDGE_ID}}/reglas-lista-compra/8410128010096",
+                  "host": [
+                    "{{BASE}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v2",
+                    "fridges",
+                    "{{FRIDGE_ID}}",
+                    "reglas-lista-compra",
+                    "8410128010096"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "04 - Lista de compra (flujo)",
+          "item": [
+            {
+              "name": "4.1 Evaluar lista",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status 200\", () => {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "const body = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"action es válido\", () => {\r",
+                      "    const validos = [\"CREATED_PENDING\", \"UPDATED_PENDING\", \"NO_ITEMS\"];\r",
+                      "    pm.expect(validos).to.include(body.action);\r",
+                      "});\r",
+                      "\r",
+                      "// Guarda LIST_ID solo si hay lista generada\r",
+                      "if (body.action !== \"NO_ITEMS\" && body.listaCompra && body.listaCompra.listId) {\r",
+                      "    pm.environment.set(\"LIST_ID\", body.listaCompra.listId);\r",
+                      "    console.log(\"LIST_ID guardado:\", body.listaCompra.listId);\r",
+                      "} else {\r",
+                      "    console.warn(\"action = NO_ITEMS — no se guardó LIST_ID. Revisa la precondición del test.\");\r",
+                      "}"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{BASE}}/api/v2/fridges/{{FRIDGE_ID}}/lista-compra/evaluar",
+                  "host": [
+                    "{{BASE}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v2",
+                    "fridges",
+                    "{{FRIDGE_ID}}",
+                    "lista-compra",
+                    "evaluar"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "4.2 Consultar lista PENDING",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status 200\", () => {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "const body = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"status es PENDING\", () => {\r",
+                      "    pm.expect(body.status).to.eql(\"PENDING\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"items tiene al menos un elemento\", () => {\r",
+                      "    pm.expect(body.items).to.be.an(\"array\").and.not.empty;\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"listId coincide con LIST_ID guardado\", () => {\r",
+                      "    pm.expect(body.listId).to.eql(pm.environment.get(\"LIST_ID\"));\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{BASE}}/api/v2/fridges/{{FRIDGE_ID}}/lista-compra/pendiente",
+                  "host": [
+                    "{{BASE}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v2",
+                    "fridges",
+                    "{{FRIDGE_ID}}",
+                    "lista-compra",
+                    "pendiente"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "4.3 Pedir lista (→ ORDERED)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status 200\", () => {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "const body = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"status es ORDERED\", () => {\r",
+                      "    pm.expect(body.listaCompra.status).to.eql(\"ORDERED\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"existe orderedAt\", () => {\r",
+                      "    pm.expect(body.listaCompra.orderedAt).to.exist;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{BASE}}/api/v2/fridges/{{FRIDGE_ID}}/lista-compra/pendiente/pedir",
+                  "host": [
+                    "{{BASE}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v2",
+                    "fridges",
+                    "{{FRIDGE_ID}}",
+                    "lista-compra",
+                    "pendiente",
+                    "pedir"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "4.4 Completar lista (→ COMPLETED)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status 200\", () => {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "const body = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"status es COMPLETED\", () => {\r",
+                      "    pm.expect(body.status).to.eql(\"COMPLETED\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"existe completedAt\", () => {\r",
+                      "    pm.expect(body.completedAt).to.exist;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{BASE}}/api/v2/fridges/{{FRIDGE_ID}}/lista-compra/{{LIST_ID}}/completar",
+                  "host": [
+                    "{{BASE}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v2",
+                    "fridges",
+                    "{{FRIDGE_ID}}",
+                    "lista-compra",
+                    "{{LIST_ID}}",
+                    "completar"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "05 - Estado ilegal",
+          "item": [
+            {
+              "name": "5.1 Añadir item manual",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status 200\", () => {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "const body = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"status es PENDING\", () => {\r",
+                      "    pm.expect(body.status).to.eql(\"PENDING\");\r",
+                      "});\r",
+                      "\r",
+                      "// Guarda el listId para usarlo en 05.2\r",
+                      "if (body.listId) {\r",
+                      "    pm.environment.set(\"PENDING_LIST_ID\", body.listId);\r",
+                      "    console.log(\"PENDING_LIST_ID guardado:\", body.listId);\r",
+                      "}"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"barcode\": \"5449000000996\",\r\n    \"qty\": 2\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{BASE}}/api/v2/fridges/{{FRIDGE_ID}}/lista-compra/pendiente/items",
+                  "host": [
+                    "{{BASE}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v2",
+                    "fridges",
+                    "{{FRIDGE_ID}}",
+                    "lista-compra",
+                    "pendiente",
+                    "items"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "5.2 Completar PENDING directo",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status 404 — transición ilegal\", () => {\r",
+                      "    pm.response.to.have.status(404);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"El error menciona ORDERED\", () => {\r",
+                      "    const texto = pm.response.text();\r",
+                      "    pm.expect(texto.toUpperCase()).to.include(\"ORDERED\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{BASE}}/api/v2/fridges/{{FRIDGE_ID}}/lista-compra/{{PENDING_LIST_ID}}/completar",
+                  "host": [
+                    "{{BASE}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v2",
+                    "fridges",
+                    "{{FRIDGE_ID}}",
+                    "lista-compra",
+                    "{{PENDING_LIST_ID}}",
+                    "completar"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "06 - Evento individual ThingsBoard",
+          "item": [
+            {
+              "name": "6.1 PRODUCT_ADDED",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status 200\", () => {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "const body = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"status es APPLIED\", () => {\r",
+                      "    pm.expect(body.status).to.eql(\"APPLIED\");\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"existe inventario en la respuesta\", () => {\r",
+                      "    pm.expect(body.inventario).to.exist;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"fridgeId\": \"{{FRIDGE_ID}}\",\r\n    \"eventId\": \"test-postman-001\",\r\n    \"eventType\": \"PRODUCT_ADDED\",\r\n    \"eventPayload\": {\r\n        \"barcode\": \"8410128010096\",\r\n        \"cantidad\": 2\r\n    }\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{BASE}}/api/v2/thingsboard/individual",
+                  "host": [
+                    "{{BASE}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v2",
+                    "thingsboard",
+                    "individual"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "6.2 Mismo eventId → DUPLICATE",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status 200\", () => {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"status es DUPLICATE\", () => {\r",
+                      "    const body = pm.response.json();\r",
+                      "    pm.expect(body.status).to.eql(\"DUPLICATE\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"fridgeId\": \"{{FRIDGE_ID}}\",\r\n    \"eventId\": \"test-postman-001\",\r\n    \"eventType\": \"PRODUCT_ADDED\",\r\n    \"eventPayload\": {\r\n        \"barcode\": \"8410128010096\",\r\n        \"cantidad\": 2\r\n    }\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{BASE}}/api/v2/thingsboard/individual",
+                  "host": [
+                    "{{BASE}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v2",
+                    "thingsboard",
+                    "individual"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "6.3 PRODUCT_REMOVE",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status 200\", () => {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"status es APPLIED o IGNORED\", () => {\r",
+                      "    const body = pm.response.json();\r",
+                      "    pm.expect([\"APPLIED\", \"IGNORED\"]).to.include(body.status);\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"fridgeId\": \"{{FRIDGE_ID}}\",\r\n    \"eventType\": \"PRODUCT_REMOVE\",\r\n    \"eventPayload\": {\r\n        \"barcode\": \"8410128010096\",\r\n        \"cantidad\": 1\r\n    }\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{BASE}}/api/v2/thingsboard/individual",
+                  "host": [
+                    "{{BASE}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v2",
+                    "thingsboard",
+                    "individual"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "6.4 Sin barcode → INVALID",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status 200\", () => {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"status es INVALID\", () => {\r",
+                      "    const body = pm.response.json();\r",
+                      "    pm.expect(body.status).to.eql(\"INVALID\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"fridgeId\": \"{{FRIDGE_ID}}\",\r\n    \"eventType\": \"PRODUCT_ADDED\",\r\n    \"eventPayload\": {\r\n        \"cantidad\": 2\r\n    }\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{BASE}}/api/v2/thingsboard/individual",
+                  "host": [
+                    "{{BASE}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v2",
+                    "thingsboard",
+                    "individual"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "07 - Alertas puerta abierta",
+          "item": [
+            {
+              "name": "7.1 Alertas iniciales",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status 200\", () => {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"La respuesta es un array\", () => {\r",
+                      "    pm.expect(pm.response.json()).to.be.an(\"array\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{BASE}}/api/v2/alertas/activas",
+                  "host": [
+                    "{{BASE}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v2",
+                    "alertas",
+                    "activas"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "7.2 Crear alarma PUERTA_ABIERTA",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status 200\", () => {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "const body = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"ok es true\", () => {\r",
+                      "    pm.expect(body.ok).to.be.true;\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"fridgeId coincide\", () => {\r",
+                      "    pm.expect(body.fridgeId).to.eql(pm.environment.get(\"FRIDGE_ID\"));\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"fridgeId\": \"{{FRIDGE_ID}}\",\r\n    \"type\": \"PUERTA_ABIERTA\",\r\n    \"severity\": \"CRITICAL\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{BASE}}/api/v2/thingsboard/alarma",
+                  "host": [
+                    "{{BASE}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v2",
+                    "thingsboard",
+                    "alarma"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "7.3 Alerta aparece en activas",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status 200\", () => {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "const body = pm.response.json();\r",
+                      "const fridgeId = pm.environment.get(\"FRIDGE_ID\");\r",
+                      "const alerta = body.find(a => a.fridgeId === fridgeId);\r",
+                      "\r",
+                      "pm.test(\"El array contiene la alerta de la nevera\", () => {\r",
+                      "    pm.expect(alerta, \"No se encontró la alerta para \" + fridgeId).to.exist;\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"La alerta tiene mensaje y desde\", () => {\r",
+                      "    pm.expect(alerta.mensaje).to.exist;\r",
+                      "    pm.expect(alerta.desde).to.exist;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{BASE}}/api/v2/alertas/activas",
+                  "host": [
+                    "{{BASE}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v2",
+                    "alertas",
+                    "activas"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "7.4 Limpiar alarma",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status 200\", () => {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "pm.test(\"ok es true\", () => {\r",
+                      "    const body = pm.response.json();\r",
+                      "    pm.expect(body.ok).to.be.true;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"fridgeId\": \"{{FRIDGE_ID}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{BASE}}/api/v2/thingsboard/alarma/clear",
+                  "host": [
+                    "{{BASE}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v2",
+                    "thingsboard",
+                    "alarma",
+                    "clear"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "7.5 Alerta desaparece",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status 200\", () => {\r",
+                      "    pm.response.to.have.status(200);\r",
+                      "});\r",
+                      "\r",
+                      "const body = pm.response.json();\r",
+                      "const fridgeId = pm.environment.get(\"FRIDGE_ID\");\r",
+                      "\r",
+                      "pm.test(\"La nevera ya no tiene alertas activas\", () => {\r",
+                      "    const alerta = body.find(a => a.fridgeId === fridgeId);\r",
+                      "    pm.expect(alerta, \"La alerta sigue activa cuando no debería\").to.be.undefined;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{BASE}}/api/v2/alertas/activas",
+                  "host": [
+                    "{{BASE}}"
+                  ],
+                  "path": [
+                    "api",
+                    "v2",
+                    "alertas",
+                    "activas"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "OpenFoodFacts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://world.openfoodfacts.org/api/v2/product/5410188032161",
+              "protocol": "https",
+              "host": [
+                "world",
+                "openfoodfacts",
+                "org"
+              ],
+              "path": [
+                "api",
+                "v2",
+                "product",
+                "5410188032161"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              "base = \"http://localhost:8000\"\r",
+              "gke = \"http://34.175.29.6:8000\""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

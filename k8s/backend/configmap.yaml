@@ -1,0 +1,27 @@
+# ConfigMap: backend-config
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-config
+
+data:
+  # Nombre de la base de datos dentro de MongoDB Atlas
+  DB_NAME: "iot_tfg"
+
+  # IP pública de la VM de GCP donde corre ThingsBoard CE
+  THINGSBOARD_HOST: "34.175.184.158"
+
+  # Puerto HTTP de ThingsBoard
+  THINGSBOARD_HTTP_PORT: "8080"
+
+  # Número máximo de registros de telemetría que el backend pide a ThingsBoard al arrancar
+  TB_QUERY_LIMIT: "100000"
+
+  # Timestamp Unix en milisegundos desde el que el backend descarga eventos históricos
+  TB_SYNC_START_TS: "0"
+
+  # Orígenes permitidos para las peticiones CORS del dashboard
+  BACKEND_CORS_ORIGINS: "*"
+
+  # Cadena identificadora que el backend envía a la API de OpenFoodFacts
+  OPENFOODFACTS_USER_AGENT: "TFG-IoT-Frigorifico/1.0"

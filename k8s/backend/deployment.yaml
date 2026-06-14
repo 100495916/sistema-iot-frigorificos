@@ -1,0 +1,69 @@
+# Deployment: backend
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+
+spec:
+  # Número de copias que deben estar vivas
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: backend
+
+  template:
+    metadata:
+      labels:
+        app: backend
+
+    spec:
+      containers:
+        - name: backend
+          image: europe-southwest1-docker.pkg.dev/uc3m-inf-2026-19476-g29/tfg-frigorifico/backend:latest
+
+          ports:
+            - containerPort: 8000
+
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+
+          # Variables de entorno y secretos
+          envFrom:
+            - configMapRef:
+                name: backend-config
+
+            - secretRef:
+                name: backend-secret
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+
+            # Esperar 45 segundos antes de empezar a comprobar
+            initialDelaySeconds: 45
+
+            # Comprobar cada 15 segundos si sigue vivo
+            periodSeconds: 15
+
+            # Si falla 3 veces seguidas (3 × 15s = 45s sin responder), Kubernetes reinicia el pod
+            failureThreshold: 3
+
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+
+            initialDelaySeconds: 45
+
+            periodSeconds: 10
+            
+            # Si falla 3 veces seguidas, el pod deja de recibir tráfico (pero no se reinicia).
+            failureThreshold: 3

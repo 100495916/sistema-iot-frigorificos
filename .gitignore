@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+.env
+tfg-prototipo/
+fruits-360/
+secret.yaml
+modelo_entrenado/

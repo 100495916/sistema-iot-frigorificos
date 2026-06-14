@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inventario | Dashboard Frigorifico</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="homepage-body">
+  <main class="page-shell" data-page="inventory">
+    <span class="page-label">Inventario</span>
+
+    <section class="page-screen" aria-label="Pantalla de inventario">
+      <section class="page-card hero-card" aria-label="Resumen superior">
+        <p class="page-time" data-live-time>00:00</p>
+        <p class="page-meta">FRIDGE ID: <span data-fridge-id>Sin configurar</span></p>
+        <p class="page-meta">ESTADO: <span data-api-status>Conectando</span></p>
+        <button class="reload-button" type="button" data-refresh>Recargar datos</button>
+      </section>
+
+      <section class="page-card inventory-card">
+        <h1 class="page-title">INVENTARIO</h1>
+
+        <form class="inventory-search" action="#" method="get" data-search-form>
+          <input type="text" name="search" placeholder="Buscar producto o codigo" aria-label="Buscar alimento" data-search-input />
+          <button type="submit">Buscar</button>
+        </form>
+
+        <section class="filter-panel" aria-label="Metricas del inventario">
+          <h2>Metricas:</h2>
+          <p>Datos oficiales reconstruidos por el backend desde la base de datos</p>
+
+          <div class="metrics-grid">
+            <div class="metric-mini-card">
+              <strong data-total-products>0</strong>
+              <span>Productos totales</span>
+            </div>
+            <div class="metric-mini-card">
+              <strong data-unique-products>0</strong>
+              <span>Productos diferentes</span>
+            </div>
+          </div>
+
+          <div class="metrics-extra" data-extra-metrics></div>
+        </section>
+
+        <section class="notice-box" data-feedback>
+          Cargando inventario desde la API...
+        </section>
+
+        <section class="inventory-list" aria-label="Listado de productos" data-inventory-list>
+          <article class="inventory-item-card">
+            <div class="inventory-item-copy">
+              <strong>Cargando...</strong>
+              <p>Cantidad:</p>
+              <p>Codigo:</p>
+              <p>Origen: Backend API</p>
+            </div>
+          </article>
+        </section>
+
+        <section class="inventory-table-panel" aria-label="Tabla de productos">
+          <h2>Tabla de productos</h2>
+          <div class="inventory-table-wrap">
+            <table class="inventory-table">
+              <thead>
+                <tr>
+                  <th>Producto</th>
+                  <th>Codigo</th>
+                  <th>Cantidad</th>
+                </tr>
+              </thead>
+              <tbody data-inventory-table>
+                <tr>
+                  <td colspan="3">Cargando inventario...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+    </section>
+  </main>
+
+  <script src="config.js"></script>
+  <script src="js/shared.js"></script>
+  <script src="js/inventory.js"></script>
+</body>
+</html>

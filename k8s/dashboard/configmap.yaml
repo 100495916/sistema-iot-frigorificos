@@ -1,0 +1,12 @@
+# ConfigMap: dashboard-config
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dashboard-config
+data:
+  # Nuevo archivo con los datos para levantarse en produccion
+  config.js: |
+    const API_BASE_URL = "http://34.175.29.6:8000";
+    const FRIDGE_ID = "nevera-0";
+    const AUTO_REFRESH_SECONDS = 0;
+    window.DASHBOARD_CONFIG = { API_BASE_URL, FRIDGE_ID, AUTO_REFRESH_SECONDS };

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HomePage | Dashboard Frigorifico</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="homepage-body">
+  <main class="homepage-shell" data-page="home">
+    <span class="home-label">HomePage</span>
+
+    <section class="home-screen" aria-label="Pantalla principal del dashboard">
+      <section class="home-card home-hero" aria-label="Resumen superior">
+        <p class="home-time" data-live-time>00:00</p>
+        <p class="home-meta">FRIDGE ID: <span data-fridge-id>Sin configurar</span></p>
+        <p class="home-meta">ESTADO: <span data-api-status>Conectando</span></p>
+        <button class="reload-button" type="button" data-refresh>Recargar datos</button>
+      </section>
+
+      <section class="home-card home-shortcuts" aria-label="Accesos rapidos">
+        <nav class="shortcut-grid">
+          <a class="shortcut-item" href="inventory.html">
+            <span class="shortcut-icon">
+              <img src="imagenes/Imagen1.png" alt="Inventario" loading="lazy" />
+            </span>
+            <span class="shortcut-label">Inventario</span>
+          </a>
+
+          <a class="shortcut-item" href="lista-compra.html">
+            <span class="shortcut-icon">
+              <img src="imagenes/Imagen2.png" alt="Lista de compra" loading="lazy" />
+            </span>
+            <span class="shortcut-label">Lista Compra</span>
+          </a>
+
+          <a class="shortcut-item" href="historial.html">
+            <span class="shortcut-icon">
+              <img src="imagenes/Imagen3.png" alt="Historial" loading="lazy" />
+            </span>
+            <span class="shortcut-label">Historial</span>
+          </a>
+
+          <a class="shortcut-item" href="reglas.html">
+            <span class="shortcut-icon">
+              <img src="imagenes/Imagen4.png" alt="Reglas de compra" loading="lazy" />
+            </span>
+            <span class="shortcut-label">Reglas Compra</span>
+          </a>
+
+          <a class="shortcut-item" href="configuracion.html">
+            <span class="shortcut-icon">
+              <img src="imagenes/Imagen5.png" alt="Configuracion" loading="lazy" />
+            </span>
+            <span class="shortcut-label">Configuracion</span>
+          </a>
+        </nav>
+      </section>
+
+      <section class="home-panels">
+        <article class="home-card info-card">
+          <h2>Estado del Backend</h2>
+          <div class="notice-box" data-feedback>
+            Conectando con la API del backend...
+          </div>
+        </article>
+
+        <article class="home-card summary-card">
+          <h2>Resumen</h2>
+          <ul class="summary-items">
+            <li>Total Productos: <span data-total-products>0</span></li>
+            <li>Productos Diferentes: <span data-unique-products>0</span></li>
+            <li>Ultima Actualizacion: <span data-last-updated>Sin datos</span></li>
+          </ul>
+        </article>
+      </section>
+    </section>
+  </main>
+
+  <script src="config.js"></script>
+  <script src="js/shared.js"></script>
+  <script src="js/home.js"></script>
+</body>
+</html>
