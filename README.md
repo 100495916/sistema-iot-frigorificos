@@ -1,6 +1,6 @@
 # TFG — Sistema IoT para Frigoríficos
 
-Sistema IoT de gestión de inventario para frigoríficos. Detecta productos mediante visión artificial (cámara + modelo ONNX) o simulación, publica eventos MQTT a ThingsBoard y mantiene el inventario actualizado en MongoDB.
+Sistema IoT de gestión de inventario para frigoríficos. Detecta productos mediante visión artificial o simula los eventos, publica  estos eventos mediante MQTT a ThingsBoard y mantiene el inventario actualizado en MongoDB.
 
 ---
 
@@ -10,7 +10,7 @@ Sistema IoT de gestión de inventario para frigoríficos. Detecta productos medi
 Edge (Gemelo Digital / Raspberry Pi)
         │  MQTT
         ▼
-ThingsBoard CE  →  Rule Chain  →  REST POST
+ThingsBoard CE  →  Rule Chain  →  REST
         │  HTTP
         ▼
 Backend FastAPI  →  MongoDB Atlas
@@ -21,10 +21,10 @@ Dashboard (HTML/JS)
 
 | Componente | Tecnología | Dónde corre |
 |---|---|---|
-| Backend | FastAPI + Python | GKE (`tfg-cluster-servicios`) |
+| Backend | Python | GKE (`tfg-cluster-servicios`) |
 | Dashboard | HTML/CSS/JS estático | GKE (`tfg-cluster-servicios`) |
-| Gemelo digital | Python + Docker | GKE (`tfg-cluster-edge`) |
-| ThingsBoard CE | X | VM GCP `34.175.184.158:8080` |
+| Gemelo digital | Python | GKE (`tfg-cluster-edge`) |
+| ThingsBoard CE | X | VM GCP |
 | MongoDB | Atlas | Siempre online |
 
 ---
@@ -115,7 +115,8 @@ tfg-iot-frigorifico/
 ```powershell
 cd backend
 docker compose up -d --build
-```
+
+# http://localhost:8080
 ```
 
 ### Backend con Docker
@@ -124,18 +125,20 @@ cd backend
 docker compose up -d --build
 ```
 
-### Dashboard
+### Dashboard con Docker
 ```powershell
 cd dashboard
 docker compose up -d --build
+
 # http://localhost:8085
 ```
 
-### Gemelo digital (simulación local)
+### Gemelo digital con Docker
 ```powershell
 cd edge
 docker compose up -d --build
-# Levanta Nevera_Docker_001 y Nevera_Docker_002
+
+# Levanta nevera-0 a nevera-4
 ```
 
 ---
@@ -200,5 +203,3 @@ python test_camara.py
 
 # Controles: [q] salir [s] captura [a] ambos [b] barcode [f] frescos
 ```
-
----
